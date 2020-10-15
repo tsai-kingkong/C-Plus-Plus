@@ -53,6 +53,34 @@ int lcs(string a, string b) {
             }
         }
     }
+    for(int i=0; i<=m; i++){
+        for(int j=0;j<=n;j++){
+            if(i==0 && j == 0){
+                printf("%02s "," ");
+            }else if(i==0){
+                printf("%02c ", b[j-1]);
+            }else if(j==0){
+                printf("%02c ",a[i-1]);
+            }
+            else
+                printf("%02d ",trace[i][j]);
+        }
+        printf("\n");
+    }
+    for(int i=0; i<=m; i++){
+        for(int j=0;j<=n;j++){
+            if(i==0 && j == 0){
+                printf("%02s "," ");
+            }else if(i==0){
+                printf("%02c ", b[j-1]);
+            }else if(j==0){
+                printf("%02c ",a[i-1]);
+            }
+            else
+                printf("%02d ",res[i][j]);
+        }
+        printf("\n");
+    }
     Print(trace, m, n, a);
     return res[m][n];
 }
