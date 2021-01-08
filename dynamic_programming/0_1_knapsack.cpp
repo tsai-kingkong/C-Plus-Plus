@@ -27,24 +27,61 @@ using namespace std;
 //		Print(res, i,j-1, capacity);
 //	}
 //}
+//
+template <typename twoD>
+void show_table(twoD arr, int row, int col) {
+    for(int i=0;i<=row;i++){
+        for(int j=0; j<=col; j++){
+            cout<<arr[i][j]<<"  ";
+        }
+        cout<<endl;
+    }
+}
 
-int Knapsack(int capacity, int n, int weight[], int value[]) {
-    int res[20][20];
-    for (int i = 0; i < n + 1; ++i) {
-        for (int j = 0; j < capacity + 1; ++j) {
-            if (i == 0 || j == 0)
-                res[i][j] = 0;
-            else if (weight[i - 1] <= j)
-                res[i][j] = max(value[i - 1] + res[i - 1][j - weight[i - 1]],
-                                res[i - 1][j]);
-            else
-                res[i][j] = res[i - 1][j];
+int Knapsack2(int capacity, int n, int weight[], int value[]) {
+    //int dp[20][20];
+    int dp[n+1][capacity+1];
+    for(int i=0; i<=n; i++){
+        for(int j=0; j<=capacity; j++){
+            if(i==0 || j==0)
+                dp[i][j] = 0;
+            else if (j>=weight[i-1]){
+                dp[i][j] = max(dp[i-1][j-weight[i-1]] + value[i-1], dp[i][j-1]);
+            }
+            else{
+                dp[i][j] = dp[i-1][j];
+                //dp[i][j] = max(dp[i][j-1], dp[i-1][j]);
+            }
         }
     }
-    //	Print(res, n, capacity, capacity);
-    //	cout<<"\n";
-    return res[n][capacity];
+    //show_table(dp, n, capacity);
+    for(int i=0;i<=n;i++){
+        for(int j=0; j<=capacity; j++){
+            cout<<dp[i][j]<<"  ";
+        }
+        cout<<endl;
+    }
+    return dp[n][capacity];
 }
+
+
+int Knapsack(int capacity, int n, int weight[], int value[]){
+    int dp[capacity+1][n+1];
+    for(int i=0;i<=capacity;i++){
+        for(int j=0;j<=n;j++){
+            if(i==0 || j==0)
+                dp[i][j] = 0;
+            else if(weight[j-1] <= i){
+                dp[i][j] = max(dp[i-weight[j-1]][j-1]+value[j-1], dp[i][j-1]);
+            }else
+                dp[i][j] = dp[i][j-1];
+        }
+    }
+    return dp[capacity][n];
+}
+
+
+
 int main() {
     int n;
     cout << "Enter number of items: ";
@@ -61,6 +98,6 @@ int main() {
     int capacity;
     cout << "Enter capacity: ";
     cin >> capacity;
-    cout << Knapsack(capacity, n, weight, value);
+    cout << Knapsack2(capacity, n, weight, value);
     return 0;
 }
